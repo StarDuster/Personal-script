@@ -1,0 +1,3 @@
+# Personal-script
+
+zsh theme
