@@ -1,4 +1,4 @@
-Alt & t::Send ^{t}
+Alt & t::Send ^{t}
 Alt & w::Send ^{w}
 Alt & r::Send ^{r}
 Alt & c::Send ^{c}
