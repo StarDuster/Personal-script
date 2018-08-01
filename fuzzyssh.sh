@@ -16,6 +16,7 @@ if [ -n "$hosts" ]; then
         printf "%s\t%s\n" "$i" "${hosts[$i]}"
     done
     read -p "Choose which one to connect" id 
+    id=${id:-0}
     ssh ${hosts[$((id))]}
 else
     echo "No host found"
