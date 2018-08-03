@@ -21,6 +21,8 @@ search in ssh config dir with given keyword, then choose one to connect
 
 Usage: `fuzzyssh.sh [keyword]`
 
+if the input keyword is exactly a IP address, the script will connect to it directly without asking, so you can just `alias ssh='/path/to/fuzzyssh.sh`
+
 #### shutup.sh
 
 to control fans of IBM System x rack server, using `ipmitool`
