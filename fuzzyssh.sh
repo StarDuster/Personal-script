@@ -11,7 +11,11 @@ alias grep="grep --exclude=$userdir/.ssh/known_hosts
             --exclude=$userdir/.ssh/multiplex
             --exclude=$userdir/.ssh/authorized_keys"
 hosts=($(grep -r $1 ~/.ssh | awk '{ print $2}'))
-if [ -n "$hosts" ]; then 
+if echo $1 | grep -qE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b"; then
+    ssh $1 
+elif [ ${#hosts[@]} -eq 1 ]; then
+    ssh ${hosts[0]}
+elif [ -n "$hosts" ]; then 
     for i in "${!hosts[@]}"; do
         printf "%s\t%s\n" "$i" "${hosts[$i]}"
     done
