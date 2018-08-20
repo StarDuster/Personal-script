@@ -1,14 +1,14 @@
-#!/bin/bash
+#!/bin/bash 
 # Usage: fuzzyssh.sh keyword
 # search keyword reversely in ~/.ssh
 # display all matchs and choose one to connect
-
+shopt -s expand_aliases
 PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 userdir=~
 declare -a hosts
-alias grep="grep --exclude=$userdir/.ssh/known_hosts 
-            --exclude=$userdir/.ssh/\*id
-            --exclude=$userdir/.ssh/multiplex
+alias grep="grep --exclude=$userdir/.ssh/known_hosts \
+            --exclude=$userdir/.ssh/*id* \
+            --exclude=$userdir/.ssh/multiplex \
             --exclude=$userdir/.ssh/authorized_keys"
 hosts=($(grep -r $1 ~/.ssh | awk '{ print $2}'))
 if echo $1 | grep -qE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b"; then
