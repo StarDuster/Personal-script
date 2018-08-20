@@ -11,10 +11,6 @@ autohotkey script for windows to make hotkeys work like mac, include:
 * alt+c/v/w/t/s/r/a work as ctrl+c/v/w/t/s/r/a
 * alt+q works as alt+f4
 
-#### ddns.sh
-
-a dnspod ddns script
-
 #### fuzzyssh.sh 
 
 search in ssh config dir with given keyword, then choose one to connect
