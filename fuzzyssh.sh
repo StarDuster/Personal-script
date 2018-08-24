@@ -1,27 +1,88 @@
-#!/bin/bash 
+#!/bin/bash
 # Usage: fuzzyssh.sh keyword
 # search keyword reversely in ~/.ssh
 # display all matchs and choose one to connect
-shopt -s expand_aliases
+
 PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
-userdir=~
+USERDIR=~
+
+shopt -s expand_aliases
 declare -a hosts
-alias grep="grep --exclude=$userdir/.ssh/known_hosts \
-            --exclude=$userdir/.ssh/*id* \
-            --exclude=$userdir/.ssh/multiplex \
-            --exclude=$userdir/.ssh/authorized_keys"
-hosts=($(grep -r $1 ~/.ssh | awk '{ print $2}'))
-if echo $1 | grep -qE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b"; then
-    ssh $1 
-elif [ ${#hosts[@]} -eq 1 ]; then
-    ssh ${hosts[0]}
-elif [ -n "$hosts" ]; then 
-    for i in "${!hosts[@]}"; do
-        printf "%s\t%s\n" "$i" "${hosts[$i]}"
+declare -a new_hosts
+declare -a ssh_opts
+declare -a ssh_args
+declare -a keywords
+
+alias grep="grep --exclude=${USERDIR}/.ssh/known_hosts \
+            --exclude=${USERDIR}/.ssh/*id* \
+            --exclude=${USERDIR}/.ssh/multiplex \
+            --exclude=${USERDIR}/.ssh/authorized_keys"
+
+parse_option()
+{
+    while getopts ":46AaCfGgKkMNnqsTtVvXxYy:B:b:c:D:E:e:F:I:i:J:L:l:m:O:o:p:Q:R:S:W:w:" optname
+    do
+        case "${optname}" in
+            B|b|c|D|E|e|F|I|i|J|L|l|m|O|o|p|Q|R|S|W|w)
+                ssh_args+=(-$optname $OPTARG) ;;
+            4|6|A|a|C|f|G|g|K|k|M|N|n|q|s|T|t|V|v|X|x|Y|y)
+                ssh_opts+=(-$optname) ;;
+            *) echo "Wrong option" && exit 1 ;;
+        esac
     done
-    read -p "Choose which one to connect" id 
-    id=${id:-0}
-    ssh ${hosts[$((id))]}
-else
-    echo "No host found"
-fi
+
+    shift $((OPTIND - 1))
+
+    while [ $# -gt 0 ]; do
+        keywords+=($1) && shift
+    done
+}
+
+search_keywords()
+{
+    hosts=($(grep -r $1 -- ${USERDIR}/.ssh | awk '{ print $2}'))
+    new_hosts=()
+    length=${#keywords[@]}
+
+    for i in `seq 0 $(($length-1))`; 
+    do
+        for j in "${!hosts[@]}"; do
+            if echo ${hosts[$j]} | grep -q "${keywords[$i]}";then
+                new_hosts+=(${hosts[$j]})
+            else
+                :
+            fi
+        done
+        i=$((i+1))
+        hosts=(${new_hosts[@]})
+        new_hosts=()
+    done
+}
+
+connect_hosts()
+{
+    if echo ${keywords[0]} | grep -qE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b"; then
+        echo -e "\nExec ssh ${ssh_args[@]} ${ssh_opts[@]} ${keywords[0]}\n"  
+        ssh ${ssh_args[@]} ${ssh_opts[@]} ${keywords[0]}  
+    else
+        search_keywords ${keywords[@]} 
+    fi
+
+    if [ ${#hosts[@]} -eq 1 ]; then
+        echo -e "\nExec ssh ${ssh_args[@]} ${ssh_opts[@]} ${hosts[0]}\n"
+        ssh ${ssh_args[@]} ${ssh_opts[@]} ${hosts[0]} 
+    elif [ -n "$hosts" ]; then 
+        for i in "${!hosts[@]}"; do
+            printf "%s\t%s\n" "$i" "${hosts[$i]}"
+        done
+        read -p "Choose which one to connect" id 
+        id=${id:-0}
+        echo -e "\nExec ssh ${ssh_args[@]} ${ssh_opts[@]} ${hosts[$id]}\n"
+        ssh ${ssh_args[@]} ${ssh_opts[@]} ${hosts[$id]}
+    else
+        echo "No host found" && exit 1
+    fi
+}
+
+parse_option "$@"
+connect_hosts
