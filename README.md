@@ -15,7 +15,7 @@ autohotkey script for windows to make hotkeys work like mac, include:
 
 search in ssh config dir with given keyword, then choose one to connect
 
-Usage: `fuzzyssh.sh [keyword]`
+Usage: `fuzzyssh.sh [SSH option] [keyword1] [keyword2]`
 
 if the input keyword is exactly a IP address, the script will connect to it directly without asking, so you can just `alias ssh='/path/to/fuzzyssh.sh`
 
