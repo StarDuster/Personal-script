@@ -29,6 +29,7 @@ show_help()
     echo "      [-Q query_option] [-R address] [-S ctl_path] [-W host:port] "
     echo "      [-w local_tun[:remote_tun]] destination [command] " 
 }
+
 parse_option()
 {
     while getopts ":46AaCfGgKkMNnqsTtVvXxYy:B:b:c:D:E:e:F:I:i:J:L:l:m:O:o:p:Q:R:S:W:w:" optname
@@ -38,7 +39,7 @@ parse_option()
                 ssh_args+=(-$optname $OPTARG) ;;
             4|6|A|a|C|f|G|g|K|k|M|N|n|q|s|T|t|V|v|X|x|Y|y)
                 ssh_opts+=(-$optname) ;;
-            *) echo -e "Wrong option " && show_help  && exit 1 ;;
+            *) echo -e "Wrong option " && show_help && exit 1 ;;
         esac
     done
 
