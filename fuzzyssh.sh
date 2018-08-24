@@ -1,5 +1,5 @@
 #!/bin/bash
-# Usage: fuzzyssh.sh keyword
+# Usage: fuzzyssh.sh [ssh option] [keyword1] [keyword2]
 # search keyword reversely in ~/.ssh
 # display all matchs and choose one to connect
 
@@ -18,6 +18,17 @@ alias grep="grep --exclude=${USERDIR}/.ssh/known_hosts \
             --exclude=${USERDIR}/.ssh/multiplex \
             --exclude=${USERDIR}/.ssh/authorized_keys"
 
+show_help()
+{
+    echo "Usage: fuzzyssh.sh [ssh option] [keyword1 | IP | hostname] [keyword2]... "
+    echo "      [-46AaCfGgKkMNnqsTtVvXxYy] [-B bind_interface] "
+    echo "      [-b bind_address] [-c cipher_spec] [-D [bind_address:]port] "
+    echo "      [-E log_file] [-e escape_char] [-F configfile] [-I pkcs11] "
+    echo "      [-i identity_file] [-J [user@]host[:port]] [-L address] "
+    echo "      [-l login_name] [-m mac_spec] [-O ctl_cmd] [-o option] [-p port] "
+    echo "      [-Q query_option] [-R address] [-S ctl_path] [-W host:port] "
+    echo "      [-w local_tun[:remote_tun]] destination [command] " 
+}
 parse_option()
 {
     while getopts ":46AaCfGgKkMNnqsTtVvXxYy:B:b:c:D:E:e:F:I:i:J:L:l:m:O:o:p:Q:R:S:W:w:" optname
@@ -27,7 +38,7 @@ parse_option()
                 ssh_args+=(-$optname $OPTARG) ;;
             4|6|A|a|C|f|G|g|K|k|M|N|n|q|s|T|t|V|v|X|x|Y|y)
                 ssh_opts+=(-$optname) ;;
-            *) echo "Wrong option" && exit 1 ;;
+            *) echo -e "Wrong option " && show_help  && exit 1 ;;
         esac
     done
 
@@ -86,3 +97,4 @@ connect_hosts()
 
 parse_option "$@"
 connect_hosts
+
