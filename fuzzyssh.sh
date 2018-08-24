@@ -37,8 +37,9 @@ parse_option()
         case "${optname}" in
             B|b|c|D|E|e|F|I|i|J|L|l|m|O|o|p|Q|R|S|W|w)
                 ssh_args+=(-$optname $OPTARG) ;;
-            4|6|A|a|C|f|G|g|K|k|M|N|n|q|s|T|t|V|v|X|x|Y|y)
+            4|6|A|a|C|f|G|g|K|k|M|N|n|q|s|T|t|v|X|x|Y|y)
                 ssh_opts+=(-$optname) ;;
+            V) ssh -V && exit 0 ;;
             *) echo -e "Wrong option " && show_help && exit 1 ;;
         esac
     done
@@ -48,6 +49,9 @@ parse_option()
     while [ $# -gt 0 ]; do
         keywords+=($1) && shift
     done
+    if [ ${#hosts[@]} -eq 0 ]; then 
+        echo "No keywords or hostname input" && exit 1
+    fi
 }
 
 search_keywords()
