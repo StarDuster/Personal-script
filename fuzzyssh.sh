@@ -49,7 +49,11 @@ parse_option()
     while [ $# -gt 0 ]; do
         keywords+=($1) && shift
     done
+<<<<<<< HEAD
     if [ ${#keywords[@]} -eq 0 ]; then 
+=======
+    if [ ${#hosts[@]} -eq 0 ]; then 
+>>>>>>> a9b2a5a55568b5993c3b2a05eadd7b948975755a
         echo "No keywords or hostname input" && exit 1
     fi
 }
