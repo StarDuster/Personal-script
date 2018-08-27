@@ -8,12 +8,11 @@ USERDIR=~
 
 shopt -s expand_aliases
 declare -a hosts
-declare -a new_hosts
 declare -a ssh_opts
 declare -a ssh_args
 declare -a keywords
 
-alias grep="grep --exclude=${USERDIR}/.ssh/known_hosts \
+alias grep_exclude="grep --exclude=${USERDIR}/.ssh/known_hosts \
             --exclude=${USERDIR}/.ssh/*id* \
             --exclude=${USERDIR}/.ssh/multiplex \
             --exclude=${USERDIR}/.ssh/authorized_keys"
@@ -47,7 +46,7 @@ parse_option()
     shift $((OPTIND - 1))
 
     while [ $# -gt 0 ]; do
-        keywords+=($1) && shift
+        keywords="$keywords $1" && shift
     done
     if [ ${#keywords[@]} -eq 0 ]; then 
         echo "No keywords or hostname input" && exit 1
@@ -56,22 +55,13 @@ parse_option()
 
 search_keywords()
 {
-    hosts=($(grep -r $1 -- ${USERDIR}/.ssh | awk '{ print $2}'))
-    new_hosts=()
-    length=${#keywords[@]}
-
-    for i in `seq 0 $(($length-1))`; 
-    do
-        for j in "${!hosts[@]}"; do
-            if echo ${hosts[$j]} | grep -q "${keywords[$i]}";then
-                new_hosts+=(${hosts[$j]})
-            else
-                :
-            fi
-        done
-        i=$((i+1))
-        hosts=(${new_hosts[@]})
-        new_hosts=()
+    condition="grep_exclude 'Host ' -inr $USERDIR/.ssh | awk '{ print \$2 }'"
+    for keyword in $keywords; do
+	condition="$condition | grep -i $keyword"
+    done
+    hosts=()
+    for host in $(eval $condition); do
+        hosts+=($host)
     done
 }
 
