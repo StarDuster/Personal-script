@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 # Usage: fuzzyssh.sh [ssh option] [keyword1] [keyword2]
 # search keyword reversely in ~/.ssh
 # display all matchs and choose one to connect
@@ -69,14 +69,14 @@ connect_hosts()
 {
     if echo ${keywords[0]} | grep -qE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b"; then
         echo -e "\nExec ssh ${ssh_args[@]} ${ssh_opts[@]} ${keywords[0]}\n"  
-        ssh ${ssh_args[@]} ${ssh_opts[@]} ${keywords[0]}  
+        ssh ${ssh_args[@]} ${ssh_opts[@]} ${keywords[0]} && exit 0
     else
         search_keywords ${keywords[@]} 
     fi
 
     if [ ${#hosts[@]} -eq 1 ]; then
         echo -e "\nExec ssh ${ssh_args[@]} ${ssh_opts[@]} ${hosts[0]}\n"
-        ssh ${ssh_args[@]} ${ssh_opts[@]} ${hosts[0]} 
+        ssh ${ssh_args[@]} ${ssh_opts[@]} ${hosts[0]} && exit 0
     elif [ -n "$hosts" ]; then 
         for i in "${!hosts[@]}"; do
             printf "%s\t%s\n" "$i" "${hosts[$i]}"
@@ -84,7 +84,7 @@ connect_hosts()
         read -p "Choose which one to connect" id 
         id=${id:-0}
         echo -e "\nExec ssh ${ssh_args[@]} ${ssh_opts[@]} ${hosts[$id]}\n"
-        ssh ${ssh_args[@]} ${ssh_opts[@]} ${hosts[$id]}
+        ssh ${ssh_args[@]} ${ssh_opts[@]} ${hosts[$id]} && exit 0
     else
         echo "No host found" && exit 1
     fi
