@@ -8,8 +8,9 @@ my zsh theme, fork from ys.zsh-theme
 
 autohotkey script for windows to make hotkeys work like mac, include:
 
-* alt+c/v/w/t/s/r/a work as ctrl+c/v/w/t/s/r/a
+* win+c/v/w/t/s/r/a work as ctrl+c/v/w/t/s/r/a
 * alt+q works as alt+f4
+* alt+v works as win+v (for windows 10 clipboard history)
 
 #### fuzzyssh.sh 
 
