@@ -10,5 +10,5 @@
 #q::Send !{F4}
 !v::Send #{v}
 !s::Send #{s}
-#Tab::Send !{Tab}
+!Tab::Send #{Tab}
 LWin & Tab::AltTab
