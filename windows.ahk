@@ -9,3 +9,6 @@
 #a::Send ^{a}
 #q::Send !{F4}
 !v::Send #{v}
+!s::Send #{s}
+#Tab::Send !{Tab}
+LWin & Tab::AltTab
