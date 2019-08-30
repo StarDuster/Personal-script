@@ -11,6 +11,7 @@ autohotkey script for windows to make hotkeys work like mac, include:
 * win+c/v/w/t/s/r/a work as ctrl+c/v/w/t/s/r/a
 * alt+q works as alt+f4
 * alt+v works as win+v (for windows 10 clipboard history)
+* exchange alt-tab menu and win-tab menu
 
 #### fuzzyssh.sh 
 
