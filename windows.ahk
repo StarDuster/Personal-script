@@ -3,6 +3,7 @@
 #r::Send ^{r}
 #c::Send ^{c}
 #v::Send ^{v}
+#f::Send ^{f}
 #x::Send ^{x}
 #z::Send ^{z}
 #s::Send ^{s}
