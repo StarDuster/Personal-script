@@ -11,4 +11,5 @@
 #q::Send !{F4}
 !s::Send #{s}
 !Tab::Send #{Tab}
+#+t::Send ^+{t}
 LWin & Tab::AltTab
