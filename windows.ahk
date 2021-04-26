@@ -19,11 +19,12 @@ return
 #a::Send ^{a}
 
 #q::
-if WinActive("Google Chrome")
+if WinActive("ahk_exe chrome.exe")
 {
-	Send !{F4}
+	return
 }
 else {
+	Send !{F4}
 	return
 }
 
