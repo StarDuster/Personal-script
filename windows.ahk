@@ -6,7 +6,7 @@
 #v::
 if WinActive("ahk_exe WindowsTerminal.exe")
 {
-	Send ^+{v}
+	Send ^+{v} ; notice ^+{} is not equal to ^{}
 	return
 }
 else Send ^{v}
