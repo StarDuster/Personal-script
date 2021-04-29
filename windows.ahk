@@ -3,15 +3,7 @@
 #r::Send ^{r}
 #c::Send ^{c}
 
-#v::
-if WinActive("ahk_exe WindowsTerminal.exe")
-{
-	Send ^+{v}
-	return
-}
-else Send ^{v}
-return
-
+#v::Send ^{v}
 #f::Send ^{f}
 #x::Send ^{x}
 #z::Send ^{z}
