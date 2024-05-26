@@ -1,3 +1,6 @@
+#Persistent
+#UseHook
+
 #t::Send ^{t}
 #w::Send ^{w}
 #r::Send ^{r}
@@ -6,11 +9,14 @@
 #v::
 if WinActive("ahk_exe WindowsTerminal.exe")
 {
-	Send ^+{v} ; notice ^+{} is not equal to ^{}
-	return
+    Send ^+{v} ; notice ^+{} is not equal to ^{}
+    return
 }
-else Send ^{v}
-return
+else
+{
+    Send ^{v}
+    return
+}
 
 #f::Send ^{f}
 #x::Send ^{x}
@@ -21,15 +27,18 @@ return
 #q::
 if WinActive("ahk_exe chrome.exe")
 {
-	return
+    return
 }
-else {
-	Send !{F4}
-	return
+else
+{
+    Send !{F4}
+    return
 }
 
 !s::Send #{s}
 #+t::Send ^+{t}
+
 LWin & Tab::AltTab
 
-;!Tab::Send #{Tab}
+; Ensure all keys are released
+~LWin Up::Send {LWin Up}
